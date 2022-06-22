@@ -35,6 +35,7 @@ set(
   app_actions/print_plugin_info.cpp
   app_actions/print_support.cpp
   app_actions/print_version.cpp
+  app_actions/select_event_sources.cpp
   app_actions/start_grpc_server.cpp
   app_actions/start_webserver.cpp
   app_actions/validate_rules_files.cpp
