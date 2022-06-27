@@ -28,7 +28,7 @@ class falco_logger
 	// Will throw exception if level is unknown.
 	static void set_level(string &level);
 
-	static void log(int priority, const string msg);
+	static void log(int priority, const string&& msg);
 
 	static int level;
 	static bool log_stderr;

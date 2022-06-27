@@ -72,7 +72,7 @@ void falco_logger::set_level(string &level)
 bool falco_logger::log_stderr = true;
 bool falco_logger::log_syslog = true;
 
-void falco_logger::log(int priority, const string msg)
+void falco_logger::log(int priority, const string&& msg)
 {
 
 	if(priority > falco_logger::level)
