@@ -18,6 +18,8 @@ limitations under the License.
 #include <signal.h>
 #include <atomic>
 
+#include <nlohmann/json.hpp>
+
 #include "stats_writer.h"
 #include "logger.h"
 #include "banned.h" // This raises a compilation error when certain functions are used
@@ -113,6 +115,8 @@ inline void stats_writer::push(const stats_writer::msg& m)
 void stats_writer::worker() noexcept
 {
 	stats_writer::msg m;
+	nlohmann::json jmsg;
+
 	while(true)
 	{
 		// blocks until a message becomes availables
@@ -125,17 +129,15 @@ void stats_writer::worker() noexcept
 		m_total_samples++;
 		try
 		{
-			m_output << "{\"sample\": " << m_total_samples;
-			m_output << ", \"cur\": {" <<
-				"\"events\": " << m.stats.n_evts <<
-				", \"drops\": " << m.stats.n_drops <<
-				", \"preemptions\": " << m.stats.n_preemptions <<
-				"}, \"delta\": {" <<
-				"\"events\": " << m.delta.n_evts <<
-				", \"drops\": " << m.delta.n_drops <<
-				", \"preemptions\": " << m.delta.n_preemptions <<
-				"}, \"drop_pct\": " << (m.delta.n_evts == 0 ? 0 : (100.0*m.delta.n_drops/m.delta.n_evts)) <<
-				"}," << endl;
+			jmsg["sample"] = m_total_samples;
+			jmsg["cur"]["events"] = m.stats.n_evts;
+			jmsg["cur"]["drops"] = m.stats.n_drops;
+			jmsg["cur"]["preemptions"] = m.stats.n_preemptions;
+			jmsg["delta"]["events"] = m.delta.n_evts;
+			jmsg["delta"]["drops"] = m.delta.n_drops;
+			jmsg["delta"]["preemptions"] = m.delta.n_preemptions;
+			jmsg["drop_pct"] = (m.delta.n_evts == 0 ? 0.0 : (100.0*m.delta.n_drops/m.delta.n_evts));
+			m_output << jmsg.dump() << endl;
 		}
 		catch(const exception &e)
 		{
