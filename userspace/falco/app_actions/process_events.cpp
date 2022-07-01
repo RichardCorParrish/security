@@ -26,7 +26,7 @@ limitations under the License.
 #ifndef MINIMAL_BUILD
 #include "webserver.h"
 #endif
-#include "statsfilewriter.h"
+#include "stats_writer.h"
 #include "application.h"
 
 #include <plugin_manager.h>

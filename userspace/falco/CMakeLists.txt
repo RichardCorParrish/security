@@ -46,7 +46,7 @@ set(
   outputs_stdout.cpp
   outputs_syslog.cpp
   event_drops.cpp
-  statsfilewriter.cpp
+  stats_writer.cpp
   falco.cpp
 )
 
